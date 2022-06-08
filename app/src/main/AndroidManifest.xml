@@ -10,17 +10,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LoginValidation">
         <activity
+            android:name=".view.BottomNavigation"
+            android:exported="false" />
+        <activity
             android:name=".view.HomeActivity"
             android:exported="false" />
         <activity
             android:name=".view.SignupActivity"
-            android:exported="false" />
-        <!--        <activity-->
-        <!--            android:name=".view.LoginActivity"-->
-        <!--            android:exported="false" />-->
+            android:exported="false" /> <!-- <activity -->
+        <!-- android:name=".view.LoginActivity" -->
+        <!-- android:exported="false" /> -->
         <activity
             android:name=".view.LoginActivity"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".view.SplashScreen"
             android:exported="true">

@@ -4,7 +4,7 @@
     xmlns:tools = "http://schemas.android.com/tools"
     tools:showIn = "navigation_view"
     >
-
+<group android:checkableBehavior="single">
     <item android:title="Home"
         android:id="@+id/nav_home"
         android:icon="@drawable/ic_baseline_home_24"
@@ -18,8 +18,12 @@
         android:id="@+id/rateUs"
         android:icon="@drawable/ic_baseline_rate_review_24"
         />
+</group>
+
+
     <item android:title="communicate">
         <menu>
+            <group android:checkableBehavior="single">
             <item
                 android:icon="@drawable/ic_baseline_share_24"
                 android:title="share"
@@ -31,6 +35,7 @@
                 android:title="contact us"
                 android:id="@+id/contact"
                 />
+            </group>
         </menu>
 
     </item>
