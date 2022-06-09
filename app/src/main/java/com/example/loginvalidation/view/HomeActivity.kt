@@ -1,6 +1,5 @@
 package com.example.loginvalidation.view
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -8,27 +7,25 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import com.example.loginvalidation.databinding.ActivityHomeBinding
 import androidx.databinding.DataBindingUtil
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.navigation.ui.setupWithNavController
+import androidx.fragment.app.FragmentTransaction
 import com.example.loginvalidation.R
-import com.example.loginvalidation.view.fragments.BreakingNewsFragment
+import com.example.loginvalidation.network.RecyclerListFragment
 import com.example.loginvalidation.view.fragments.HomeFragment
 import com.example.loginvalidation.view.fragments.MessageFragment
 import com.example.loginvalidation.view.fragments.RateFragment
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityHomeBinding
-    lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
+    private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_home)
-//        mBinding = ActivityHomeBinding.inflate(layoutInflater)
-//        setContentView(mBinding.root)
 
         this.title = "Home Page"
         setUpView()
+        setUpFragment()
         mBinding.navView.setNavigationItemSelectedListener {
 
             it.isChecked = true
@@ -54,11 +51,11 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
-    fun setUpView(){
+    private fun setUpView(){
         setUpDrawerLayout()
     }
 
-    fun setUpDrawerLayout(){
+    private fun setUpDrawerLayout(){
         setSupportActionBar(mBinding.appBar)
         actionBarDrawerToggle = ActionBarDrawerToggle(this,mBinding.drawerLayout,R.string.open,R.string.close)
         actionBarDrawerToggle.syncState()
@@ -74,5 +71,13 @@ mBinding.drawerLayout.addDrawerListener(actionBarDrawerToggle)
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun setUpFragment(){
+        val fragment = RecyclerListFragment.newInstance()
+        val fragmentManager : FragmentManager = supportFragmentManager
+        val fragmentTransaction :FragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(com.google.android.material.R.id.container,fragment)
+        fragmentTransaction.commit()
     }
 }
