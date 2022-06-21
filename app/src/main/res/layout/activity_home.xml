@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     >
+
     <androidx.drawerlayout.widget.DrawerLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -11,24 +12,26 @@
         tools:openDrawer="start"
         android:id="@+id/drawerLayout"
         >
-<!--        <include layout="@layout/activity_bottom_navigation"/>-->
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >
-           <LinearLayout
-               android:id="@+id/container"
-               android:layout_width="match_parent"
-               android:layout_height="match_parent"
-               app:layout_constraintStart_toStartOf="parent"
-               app:layout_constraintTop_toTopOf="parent"
-               android:orientation="vertical"/>
-
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/frameLayout"/>
+            android:id="@+id/frameLayout">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        </FrameLayout>
+            <include layout="@layout/activity_bottom_navigation"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/appBarLayout"
                 android:layout_width="match_parent"
@@ -51,7 +54,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.navigation.NavigationView
-
             android:id="@+id/nav_view"
             android:fitsSystemWindows="true"
             android:layout_gravity="start"
@@ -62,6 +64,8 @@
 
 
         </com.google.android.material.navigation.NavigationView>
+
+
     </androidx.drawerlayout.widget.DrawerLayout>
 
 </layout>

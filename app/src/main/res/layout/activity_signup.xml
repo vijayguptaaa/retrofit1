@@ -89,6 +89,7 @@
                     <EditText
                         android:id="@+id/mobile"
                         app:error="@{signupViewModel.userError.phoneErrorMessage}"
+                        android:text="@={signupViewModel.phone}"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
@@ -97,7 +98,6 @@
                         android:background="@drawable/input_bg"
                         android:drawableLeft="@drawable/ic_baseline_local_phone_24"
                         android:drawablePadding="10dp"
-                        android:ems="10"
                         android:hint="Mobile No."
                         android:inputType="textPersonName|phone"
                         android:maxLength="10"
@@ -188,6 +188,8 @@
                         app:layout_constraintTop_toBottomOf="@+id/mobile" />
 
                     <EditText
+                        app:error="@{signupViewModel.userError.confirmPasswordErrorMessage}"
+                        android:text="@={signupViewModel.confirmPassword}"
                         android:id="@+id/confirm_password"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

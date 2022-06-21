@@ -12,5 +12,5 @@ interface PersonDao {
     suspend fun insertPerson(user: User)
 
     @Query("SELECT * FROM person_details where email = :email and  password = :password")
-    fun getPerson(email : String,password : String) : User
+    fun getPerson(email: String, password: String): User
 }

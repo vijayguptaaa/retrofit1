@@ -3,15 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/background_light"
     tools:context=".view.fragments.HomeFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Home"
-        android:textColor="@color/black"
-        android:textSize="50dp"
-        android:textStyle="bold" />
+      <TextView
+          android:id="@+id/textHome"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:text="@string/home_fragment"
+          android:textSize="60sp"
+          android:textColor="@color/black"
+            />
 
 </FrameLayout>

@@ -42,7 +42,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
 
 
                     <TextView
@@ -51,7 +51,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="104dp"
-                        android:text="LogIn"
+                        android:text="@string/login_signup"
                         android:textColor="@color/white"
                         android:textSize="44sp"
                         android:textStyle="bold"
@@ -68,11 +68,11 @@
                         android:layout_marginTop="44dp"
                         android:layout_marginEnd="24dp"
                         android:background="@drawable/input_bg"
-                        android:drawableLeft="@drawable/ic_baseline_email_24"
+                        android:drawableStart="@drawable/ic_baseline_email_24"
                         android:drawablePadding="10dp"
                         android:ems="10"
-                        android:hint="Email"
-                        android:inputType="textPersonName"
+                        android:hint="@string/email_signup"
+                        android:inputType="textEmailAddress"
                         android:paddingLeft="20dp"
                         android:paddingTop="13dp"
                         android:paddingRight="20dp"
@@ -84,19 +84,21 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView"
+                        android:autofillHints=".com" />
 
                     <EditText
+                        android:autofillHints=""
                         android:id="@+id/password_"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:background="@drawable/input_bg"
-                        android:drawableLeft="@drawable/ic_baseline_security_24"
+                        android:drawableStart="@drawable/ic_baseline_security_24"
                         android:drawablePadding="10dp"
                         android:ems="10"
-                        android:hint="Password"
-                        android:inputType="textPersonName"
+                        android:hint="@string/password_login"
+                        android:inputType="textPassword"
                         app:error="@{loginViewModel.userError.passwordErrorMessage}"
                         android:paddingLeft="20dp"
                         android:paddingTop="13dp"

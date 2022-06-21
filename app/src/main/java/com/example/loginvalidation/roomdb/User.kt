@@ -1,6 +1,6 @@
 package com.example.loginvalidation.roomdb
 
-import androidx.lifecycle.MutableLiveData
+
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey

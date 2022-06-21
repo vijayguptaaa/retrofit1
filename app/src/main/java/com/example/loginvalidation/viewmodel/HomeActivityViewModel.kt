@@ -1,31 +1,31 @@
 package com.example.loginvalidation.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.loginvalidation.models.RecyclerList
-import com.example.loginvalidation.network.RetroInstance
-import com.example.loginvalidation.network.RetroService
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
-class HomeActivityViewModel : ViewModel() {
-    var recyclerListLiveData: MutableLiveData<RecyclerList>
-    init {
-        recyclerListLiveData = MutableLiveData()
-    }
+import com.example.loginvalidation.model.Movie
+import com.example.loginvalidation.model.MovieList
+import com.example.loginvalidation.repository.MainRepository
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-    fun getRecyclerListObserver() : MutableLiveData<RecyclerList>{
-        return recyclerListLiveData
-    }
+class HomeActivityViewModel(private val repository: MainRepository) : ViewModel() {
 
-    //This Function will return the instance of retrofit
-    fun makeApiCall(){
-        viewModelScope.launch(Dispatchers.IO){
-            val retroInstance = RetroInstance.getRetroInstance().create(RetroService::class.java)
-            val response = retroInstance.getDataFromApi("ny")
-            recyclerListLiveData.postValue(response)
-        }
+    val movieList = MutableLiveData<List<Movie>>()
+    val errorMessage = MutableLiveData<String>()
+
+    fun getAllMovies(){
+        val response = repository.getAllMovies()
+        response.enqueue(object : Callback<MovieList>{
+            override fun onResponse(call: Call<MovieList>, response: Response<MovieList>) {
+                movieList.postValue(response.body()?.mList)  //difference bw set value and post value.
+            }
+
+            override fun onFailure(call: Call<MovieList>, t: Throwable) {
+                errorMessage.postValue(t.message)
+            }
+
+        })
     }
 }

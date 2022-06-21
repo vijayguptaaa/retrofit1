@@ -1,13 +1,12 @@
 package com.example.loginvalidation.viewmodel
 
-import android.app.Person
-import android.util.Patterns
+import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.loginvalidation.models.UserErrorModel
 import com.example.loginvalidation.roomdb.PersonRepository
 import com.example.loginvalidation.roomdb.User
-import com.shivansh.officetask.utils.Valid
+import com.example.loginvalidation.utils.Validation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,15 +18,14 @@ class LoginViewModel(private val repository: PersonRepository) : ViewModel() {
     var password : MutableLiveData<String> = MutableLiveData()
     var liveUser : MutableLiveData<User> = MutableLiveData()
     val onSignUpResponse2 : MutableLiveData<Boolean> = MutableLiveData()
-    val onLogInResponse : MutableLiveData<Boolean> = MutableLiveData()
+    private val onLogInResponse : MutableLiveData<Boolean> = MutableLiveData()
     var userError : MutableLiveData<UserErrorModel> = MutableLiveData()
+
     init {
         onSignUpResponse2.value = false
         onLogInResponse.value = false
         userError.value = UserErrorModel()
     }
-
-
 
     // Login Button Function
     fun loginButton() {
@@ -38,8 +36,8 @@ class LoginViewModel(private val repository: PersonRepository) : ViewModel() {
 
     private fun validate() : Boolean{
         val userErrorMessage = UserErrorModel()
-        val isValidEmail = Valid.isValidEmail(email.value.toString())
-        val isValidPassword = Valid.isValidPassword(password.value.toString())
+        val isValidEmail = Validation.isValidEmail(email.value.toString())
+        val isValidPassword = Validation.isValidPassword(password.value.toString())
 
         if (!isValidEmail){
             userErrorMessage.emailErrorMessage = "Invalid Email"
@@ -47,6 +45,7 @@ class LoginViewModel(private val repository: PersonRepository) : ViewModel() {
         if (!isValidPassword){
             userErrorMessage.passwordErrorMessage= "Invalid Password"
         }
+
         userError.value = userErrorMessage
 
         return isValidEmail && isValidPassword
@@ -65,12 +64,6 @@ class LoginViewModel(private val repository: PersonRepository) : ViewModel() {
     fun signupButton() {
 
         onSignUpResponse2.value = true
-//        mContext.startActivity(
-//            Intent(
-//                mContext,
-//                SignupActivity::class.java
-//            ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY)
-//        )
 
     }
 }

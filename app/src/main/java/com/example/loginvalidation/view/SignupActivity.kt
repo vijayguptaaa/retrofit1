@@ -2,6 +2,7 @@ package com.example.loginvalidation.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -31,6 +32,7 @@ class SignupActivity : AppCompatActivity() {
 
         mViewModel.onSignUpResponse.observe(this, Observer {
             if (it) {
+                Toast.makeText(this,"Registration Successfull",Toast.LENGTH_SHORT).show()
                 startActivity(Intent(this, LoginActivity::class.java))
             }
         })
@@ -41,33 +43,4 @@ class SignupActivity : AppCompatActivity() {
         })
 
     }
-
-
-//
-//        mViewBinding.signupViewModel = mViewModel
-//        mViewModel.showError.observe(this, Observer { error->
-//            Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
-//        })
-//
-//    }
-//
-//    override fun getBindingVariable(): Int {
-//        return BR.signupViewModel
-//    }
-//
-//    override fun getViewModel(): SignUpViewModel {
-//        val mSignUpViewModel: SignUpViewModel by viewModels()
-//        this.mViewModel = mSignUpViewModel
-//        return mSignUpViewModel
-//    }
-//
-//    override fun getLayoutId(): Int {
-//        return R.layout.activity_signup
-//    }
-//
-//    override fun onBackPressed() {
-//        intent = Intent(this, LoginActivity::class.java)
-//        startActivity(intent)
-//        finish()
-//    }
 }

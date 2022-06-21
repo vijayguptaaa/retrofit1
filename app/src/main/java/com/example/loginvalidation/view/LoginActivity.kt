@@ -1,26 +1,40 @@
 package com.example.loginvalidation.view
-
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
-
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.loginvalidation.BR
+import com.example.loginvalidation.LanguageActivity
 import com.example.loginvalidation.R
-import com.example.loginvalidation.base.BaseActivity
 import com.example.loginvalidation.databinding.ActivityLoginBinding
 import com.example.loginvalidation.roomdb.PersonDatabase
 import com.example.loginvalidation.roomdb.PersonRepository
+import com.example.loginvalidation.roomdb.User
 import com.example.loginvalidation.viewModelFactories.LoginViewModelFactory
 import com.example.loginvalidation.viewmodel.LoginViewModel
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var mViewBinding: ActivityLoginBinding
     private lateinit var mViewModel: LoginViewModel
+
+
+    override fun onStart() {
+        super.onStart()
+        val sharedPreferences : SharedPreferences = getSharedPreferences("loginData", Context.MODE_PRIVATE)
+        val isLogin = sharedPreferences.getBoolean("isLogin",false)
+        val userEmail = sharedPreferences.getString("userEmail","")
+        if(isLogin){
+            val intent = Intent(this,HomeActivity::class.java).apply {
+                putExtra("userEmail",userEmail)
+            }
+            startActivity(intent)
+            finish()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,33 +54,28 @@ class LoginActivity : AppCompatActivity() {
         })
 
         mViewModel.liveUser.observe(this, Observer {
-            if (it != null){
-                startActivity(Intent(this,HomeActivity::class.java))
+            if (it != null) {
+                saveLogin(it)
+                val intent = Intent(this, HomeActivity::class.java).apply {
+                    putExtra("userEmail", it.email)
+                }
+                startActivity(intent)
+                finish()
             }
+            else Toast.makeText(this, "Please register this Email Address", Toast.LENGTH_SHORT)
+                .show()
         })
 
-//        mViewBinding = getViewDataBinding()
-//        mViewBinding.loginViewModel = mViewModel
-//
-//        mViewModel.showError.observe(this, Observer { error->
-//            Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
-//        })
-//
-//    }
-//
-//    override fun getBindingVariable(): Int {
-//        return BR.loginViewModel
-//    }
-//
-//    override fun getViewModel(): LoginViewModel {
-//        val mLoginViewModel: LoginViewModel by viewModels()
-//        this.mViewModel = mLoginViewModel
-//        return mLoginViewModel
-//    }
-//
-//    override fun getLayoutId(): Int {
-//        return R.layout.activity_login
-//    }
 
+    }
+
+    /*saving data in shared preference after login*/
+    private fun saveLogin(user: User) {
+        val sharedPreferences: SharedPreferences =
+            getSharedPreferences("loginData", Context.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor? = sharedPreferences.edit()
+        editor?.putBoolean("isLogin", true)
+        editor?.putString("userEmail", user.email)
+        editor?.apply()
     }
 }

@@ -1,11 +1,13 @@
 package com.example.loginvalidation.viewmodel
 
+import android.text.TextUtils
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.loginvalidation.models.UserErrorModel
 import com.example.loginvalidation.roomdb.User
 import com.example.loginvalidation.roomdb.PersonRepository
-import com.shivansh.officetask.utils.Valid
+import com.example.loginvalidation.utils.Validation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -48,20 +50,21 @@ class SignUpViewModel(private val repository: PersonRepository) : ViewModel()  {
     private fun validate() : Boolean {
         val userErrorMessage = UserErrorModel()
 
-        val isValidFirstName = Valid.isValidFirstName(firstName.value.toString())
-        val isValidLastName = Valid.isValidLastName(lastName.value.toString())
-        val isValidEmail = Valid.isValidEmail(email.value.toString())
-        val isValidPhone = Valid.isValidPhone(phone.value.toString())
-        val isValidPassword = Valid.isValidPassword(password.value.toString())
-//        val isConfirmPassword = Valid.isConfirmPassword(confirmPassword.toString())
+        val isValidFirstName = TextUtils.isEmpty(firstName.value)
+        val isValidLastName = TextUtils.isEmpty(lastName.value)
+        val isValidEmail = Validation.isValidEmail(email.value.toString())
+        val isValidPhone = Validation.isValidPhone(phone.value.toString())
+        val isValidPassword = Validation.isValidPassword(password.value.toString())
+        val isValidConfirmPassword = Validation.isConfirmPassword(password.value.toString(),confirmPassword.value.toString())
+
         if(isValidFirstName){
             userErrorMessage.firstNameErrorMessage = "Field cannot be empty"
         }
         if(isValidLastName){
             userErrorMessage.lastNameErrorMessage = "Field Cannot be empty"
         }
-        if(isValidPhone){
-            userErrorMessage.phoneErrorMessage = "Inavalid Phone Number"
+        if(!isValidPhone){
+            userErrorMessage.phoneErrorMessage = "Invalid Phone Number"
         }
         if(!isValidEmail){
             userErrorMessage.emailErrorMessage = "Invalid Email"
@@ -69,11 +72,11 @@ class SignUpViewModel(private val repository: PersonRepository) : ViewModel()  {
         if(!isValidPassword){
             userErrorMessage.passwordErrorMessage = "Invalid Password"
         }
-//        if(isConfirmPassword){
-//            userErrorMessage.confirmPasswordErrorMessage = "Please Confirm Password"
-//        }
+        if(!isValidConfirmPassword){
+            userErrorMessage.confirmPasswordErrorMessage = "Please Confirm Password"
+        }
         userError.value = userErrorMessage
-        return !isValidFirstName && !isValidLastName && !isValidPhone && isValidEmail && isValidPassword
+        return !isValidFirstName && !isValidLastName && isValidPhone && isValidEmail && isValidPassword && isValidConfirmPassword
     }
     fun signupButton(){
         if (validate()){
@@ -87,82 +90,11 @@ class SignUpViewModel(private val repository: PersonRepository) : ViewModel()  {
     // Save Data into Database
     private fun insertUser() {
         CoroutineScope(Dispatchers.IO).launch {
-            user = User(0,firstName.value.toString(),lastName.value.toString()
-                ,email.value.toString(),password.value.toString())
+            user = User(0,firstName.value.toString().trim(),lastName.value.toString().trim()
+                ,email.value.toString().trim(),password.value.toString().trim())
             repository.insert(user)
+
         }
     }
 }
-//    private fun firstNameValidation(): Boolean {
-//        if (firstName.get().toString().isBlank()) {
-//            showError.value = "Please Fill this Field"
-//        } else {
-//            return true
-//        }
-//        return false
-//    }
-//
-//    // Format validation of Last Name
-//    private fun lastNameValidation(): Boolean {
-//        if (lastName.get().toString().isBlank()) {
-//            showError.value = "Please Fill this Field"
-//        } else {
-//            return true
-//        }
-//        return false
-//    }
-//
-//    // Format validation of Email
-//    private fun emailValidation(): Boolean {
-//        if (email.get().toString().isBlank()) {
-//            showError.value = "Please Fill this Field"
-//        } else if (!Patterns.EMAIL_ADDRESS.matcher(email.get().toString()).matches()) {
-//            showError.value = "Please Enter a Valid Email"
-//        } else {
-//            return true
-//        }
-//        return false
-//    }
-//
-//    // Format validation of Password
-//    private fun passwordValidation(): Boolean {
-//
-//        if (password.get().toString().isBlank()) {
-//            showError.value = "Please Fill this Field"
-//        } else if (password.get().toString().length < 8) {
-//            showError.value= "Password must be 8 Characters"
-//        }
-//        else {
-//            return true
-//        }
-//        return false
-//    }
-
-    // Login button Function
-//    fun loginButton() {
-//        mContext.startActivity(Intent(mContext,LoginActivity::class.java
-//            ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY)
-//        )
-//    }
-
-    // Signup button function
-//    fun signupButton() {
-//        if (firstNameValidation() && lastNameValidation() && emailValidation() && passwordValidation()) {
-//            savePerson()
-//            mContext.startActivity(
-//                Intent(
-//                    mContext,
-//                    LoginActivity::class.java
-//                ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY)
-//            )
-//            showError.value = "Registered Successfully"
-//            firstName.set("")
-//            lastName.set("")
-//            email.set("")
-//            password.set("")
-//        }
-//        else{
-//
-//        }
-//    }
 
